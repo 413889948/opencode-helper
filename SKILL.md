@@ -1,5 +1,22 @@
 # OpenCode Helper Skill
 
+## ⚠️ 开发规范 - 必须遵循
+
+**重要**：所有软件开发必须使用 **OpenSpec** 作为基础规范！
+
+### OpenSpec 核心命令
+- `/opsx:new` - 创建新变更
+- `/opsx:ff` - 快速功能实现（需求明确时）
+- `/opsx:apply` - 实施任务
+- `/opsx:verify` - 验证实施
+- `/opsx:archive` - 归档完成
+
+### OpenSpec 参考
+- 文档：https://github.com/studyzy/OpenSpec-cn
+- 理念：灵活、迭代、简单、面向存量项目
+
+---
+
 ## Skill 名称与描述
 
 **Skill 名称**: opencode-helper
@@ -578,3 +595,57 @@ module.exports = {
 - GitHub 仓库：https://github.com/opencode-dev/opencode
 - 问题反馈：https://github.com/opencode-dev/opencode/issues
 - Discord 社区：https://discord.gg/opencode
+
+## 开发技巧与经验总结
+
+### 命令格式
+- ✅ 正确：`opencode run "任务描述"` 
+- ❌ 错误：`opencode run --full-auto "任务"` （--full-auto 不是有效参数）
+
+### PTY 模式（重要！）
+- **必须使用 `pty:true`** 参数运行 opencode，否则交互式 CLI 会失败
+- 示例：`exec command:"opencode run ..." pty:true timeout:300`
+
+### GitHub 凭证配置
+- opencode 的 `auth` 只配置了 LLM 提供商（如 MiniMax），没有 GitHub
+- GitHub token 需要通过 git 凭证存储：
+  ```bash
+  git config --global credential.helper store
+  echo "https://TOKEN@github.com" > ~/.git-credentials
+  ```
+- 或者在仓库中配置 remote：
+  ```bash
+  git remote set-url origin https://USER:TOKEN@github.com/user/repo.git
+  ```
+
+### 工作原则
+- **只指挥，不编码**：所有代码工作交给 opencode 完成
+- **项目统一放在 ~/Code 目录**下管理
+- 使用 `opencode run "任务描述"` 调度 opencode 执行
+- 监控进程状态，跟踪进度
+
+### Skill 开发最佳实践
+- 先创建基础结构，再逐步完善
+- 脚本要有错误处理和回退机制
+- 默认源选择稳定可靠的（国际 RSS）
+- 保留关键词搜索功能
+
+### Python 依赖问题
+- 目标环境没有 pip，需要先安装
+- 内置 XML 解析器可作为回退方案
+- 建议在脚本中处理依赖缺失情况
+
+### RSS 新闻源问题
+- **国内 RSS 源大多失效**：36氪、腾讯新闻、凤凰网 RSS 接口返回 404 或无效内容
+- **可靠源**：Yahoo News、BBC、CNN、AP、Yahoo Finance、MarketWatch
+- **解决方案**：优先使用国际 RSS 源，或配置浏览器自动化抓取 JS 渲染页面
+
+### Chrome DevTools MCP 配置
+- 需要安装 Chrome 浏览器
+- 安装命令：`npm install -g chrome-devtools-mcp`
+- 配置 OpenClaw：在 `hooks.internal.installs` 中添加
+- 需要完整重启 OpenClaw 才能生效
+
+### Brave Search API
+- 配置命令：`openclaw configure --section web`
+- 或设置环境变量：`BRAVE_API_KEY`
