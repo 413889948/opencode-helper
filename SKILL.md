@@ -649,3 +649,9 @@ module.exports = {
 ### Brave Search API
 - 配置命令：`openclaw configure --section web`
 - 或设置环境变量：`BRAVE_API_KEY`
+
+### 网页爬取 Skill
+- 创建独立 skill 目录：`~/.openclaw/workspace/skills/xxx/`
+- 必选文件：`SKILL.md`（包含 YAML frontmatter）
+- 推荐创建：`README.md`、`scripts/`、`references/`
+- 使用内置解析器作为回退，避免依赖问题
