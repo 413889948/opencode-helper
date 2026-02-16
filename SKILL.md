@@ -655,3 +655,21 @@ module.exports = {
 - 必选文件：`SKILL.md`（包含 YAML frontmatter）
 - 推荐创建：`README.md`、`scripts/`、`references/`
 - 使用内置解析器作为回退，避免依赖问题
+
+### OpenCode 常见问题
+
+#### 1. 进程被 SIGKILL 杀掉
+- **原因**：系统资源限制或超时
+- **解决**：设置 `OPENCODE_NO_TUI=1` 禁用 TUI
+- **命令**：`OPENCODE_NO_TUI=1 opencode run "任务"`
+
+#### 2. Python html 模块冲突
+- **问题**：`import html` 与 `html.escape()` 冲突
+- **解决**：使用别名 `import html as html_utils`
+
+#### 3. f-string 反斜杠错误
+- **问题**：`f'{html.escape(...)}'` 语法错误
+- **解决**：先赋值再使用
+
+#### 4. BeautifulSoup 未安装
+- **解决**：内置 SimpleSoup 作为回退解析器
